@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Retour vers Flemme</title>
+
+    <!--
+      Le rebond vers l'application.
+
+      Stripe n'accepte pas « flemme://... » comme adresse de retour : il
+      exige du http/https, et refuse le reste sans detour. Cette page est
+      donc l'intermediaire — elle ne fait que renvoyer vers l'application.
+
+      Elle n'affiche aucun verdict. L'inscription est jugee par Stripe et
+      transmise a Flemme par webhook, pas par le chemin qu'a emprunte le
+      navigateur : quelqu'un qui abandonne en cours de route arrive ici
+      exactement comme quelqu'un qui a fini. Ecrire « c'est bon » serait
+      faux une fois sur deux.
+    -->
+    <meta name="robots" content="noindex" />
+
+    <style>
+      :root {
+        --fond: #f8f3ed;
+        --encre: #1b1b1b;
+        --action: #fed929;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: var(--fond);
+        color: var(--encre);
+        font-family: Nunito, system-ui, -apple-system, "Segoe UI", sans-serif;
+        text-align: center;
+      }
+
+      main { max-width: 420px; display: grid; gap: 20px; }
+
+      h1 { margin: 0; font-size: 26px; font-weight: 800; }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: rgba(27, 27, 27, 0.65);
+      }
+
+      /*
+        Un verbe, pas une icone, et 54 px de haut : c'est l'action
+        principale de la page, et la seule.
+      */
+      a.bouton {
+        display: block;
+        padding: 16px 24px;
+        min-height: 54px;
+        border-radius: 18px;
+        background: var(--action);
+        color: var(--encre);
+        font-size: 17px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>Retour vers Flemme</h1>
+      <p>
+        Tu peux fermer cette page. Si l'application ne s'ouvre pas toute
+        seule, touche le bouton.
+      </p>
+      <a class="bouton" href="flemme://motive/revenus">Ouvrir Flemme</a>
+    </main>
+
+    <script>
+      /*
+        Le rebond automatique, une seule fois.
+
+        Certains navigateurs bloquent les schemas inconnus quand le clic
+        de l'utilisateur est trop loin — d'ou le bouton, qui reste visible
+        et fonctionne toujours. On ne remplace pas l'historique : le
+        Motive doit pouvoir revenir en arriere s'il s'est trompe.
+      */
+      window.location.href = 'flemme://motive/revenus';
+    </script>
+  </body>
+</html>
